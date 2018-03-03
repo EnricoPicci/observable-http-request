@@ -1,7 +1,11 @@
 
 import 'mocha';
 
-import {httpGetRequestObs, httpPostRequestObs} from './observable-http-request';
+import {httpGetRequestObs} from './observable-http-request';
+import {httpPostRequestObs} from './observable-http-request';
+import {httpPutRequestObs} from './observable-http-request';
+import {httpPatchRequestObs} from './observable-http-request';
+import {httpDeleteRequestObs} from './observable-http-request';
 
 describe('httpGetRequestObs function', () => {
     
@@ -41,6 +45,81 @@ describe('httpPostRequestObs function', () => {
                 } else {
                     console.error(serviceCallResult);
                     return done(new Error('serviceCallResult empty'));
+                }
+            }
+        )
+    });
+
+});
+
+
+describe('httpPutRequestObs function', () => {
+    
+    it('issues an http put request to https://reqres.in/ - returns an observable', done => {
+        const uri = 'https://reqres.in/api/users/2';
+        const name = 'John';
+        const job = 'dev';
+        const user = {name, job};
+        let serviceCallResult;
+        httpPutRequestObs(uri, user).subscribe(
+            data => serviceCallResult = data,
+            error => console.error(error),
+            () => {
+                if (serviceCallResult.name === name && serviceCallResult.job === job) {
+                    return done()
+                } else {
+                    console.error(serviceCallResult);
+                    return done(new Error('serviceCallResult empty'));
+                }
+            }
+        )
+    });
+
+});
+
+
+describe('httpPatchRequestObs function', () => {
+    
+    it('issues an http patch request to https://reqres.in/ - returns an observable', done => {
+        const uri = 'https://reqres.in/api/users/2';
+        const name = 'John';
+        const job = 'dev';
+        const user = {name, job};
+        let serviceCallResult;
+        httpPatchRequestObs(uri, user).subscribe(
+            data => serviceCallResult = data,
+            error => console.error(error),
+            () => {
+                if (serviceCallResult.name === name && serviceCallResult.job === job) {
+                    return done()
+                } else {
+                    console.error(serviceCallResult);
+                    return done(new Error('serviceCallResult empty'));
+                }
+            }
+        )
+    });
+
+});
+
+
+describe('httpDeleteRequestObs function', () => {
+    
+    it('issues an http delete request to https://reqres.in/ - returns an observable', done => {
+        const uri = 'https://reqres.in/api/users/2';
+        const name = 'John';
+        const job = 'dev';
+        const user = {name, job};
+        let serviceCallResult;
+        httpDeleteRequestObs(uri, user).subscribe(
+            data => serviceCallResult = data,
+            error => console.error(error),
+            () => {
+                if (serviceCallResult.response.statusCode === 204) {
+                    return done()
+                } else {
+                    console.error(serviceCallResult);
+                    return done(new Error('status code expected is 204 and not ' + serviceCallResult));
                 }
             }
         )

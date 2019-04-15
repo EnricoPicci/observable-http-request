@@ -1,6 +1,5 @@
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/bindNodeCallback';
+import { bindNodeCallback } from 'rxjs'
 import * as request from 'request';
 
 // ============================ http GET ================================
@@ -12,7 +11,7 @@ export function httpGetRequestObs(uri: string) {
 const requestGetFunction = (uri: string, 
                             options: {}, 
                             callback: (err, _res: request.Response, body) => void) => request.get(uri, options, callback);
-const requestGetObs = Observable.bindNodeCallback(requestGetFunction, toBodyOnly);
+const requestGetObs = bindNodeCallback(requestGetFunction, toBodyOnly);
 
 
 // ============================ http POST ================================
@@ -24,7 +23,7 @@ export function httpPostRequestObs(uri: string, body: any) {
 const requestPostFunction = (uri: string, 
                             options: any, 
                             callback: (err, _res: request.Response, body) => void) => request.post(uri, options, callback);
-const requestPostObs = Observable.bindNodeCallback(requestPostFunction, toBodyOnly);
+const requestPostObs = bindNodeCallback(requestPostFunction, toBodyOnly);
 
 
 
@@ -37,7 +36,7 @@ export function httpPutRequestObs(uri: string, body: any) {
 const requestPutFunction = (uri: string, 
                             options: any, 
                             callback: (err, _res: request.Response, body) => void) => request.put(uri, options, callback);
-const requestPutObs = Observable.bindNodeCallback(requestPutFunction, toBodyOnly);
+const requestPutObs = bindNodeCallback(requestPutFunction, toBodyOnly);
 
 
 
@@ -50,7 +49,7 @@ export function httpPatchRequestObs(uri: string, body: any) {
 const requestPatchFunction = (uri: string, 
                             options: any, 
                             callback: (err, _res: request.Response, body) => void) => request.patch(uri, options, callback);
-const requestPatchObs = Observable.bindNodeCallback(requestPatchFunction, toBodyOnly);
+const requestPatchObs = bindNodeCallback(requestPatchFunction, toBodyOnly);
 
 
 
@@ -63,7 +62,7 @@ export function httpDeleteRequestObs(uri: string, body: any) {
 const requestDeleteFunction = (uri: string, 
                             options: any, 
                             callback: (err, _res: request.Response, body) => void) => request.delete(uri, options, callback);
-const requestDeleteObs = Observable.bindNodeCallback(requestDeleteFunction, toResponseAndBody);
+const requestDeleteObs = bindNodeCallback(requestDeleteFunction, toResponseAndBody);
 
 
 function toBodyOnly(_res: request.Response, body) {

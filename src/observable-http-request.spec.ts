@@ -14,7 +14,10 @@ describe('httpGetRequestObs function', () => {
         let serviceCallResult;
         httpGetRequestObs(uri).subscribe(
             data => serviceCallResult = data,
-            error => console.error(error),
+            error => {
+                console.error(error);
+                done(error);
+            },
             () => {
                 if (serviceCallResult.length > 0) {
                     return done()
@@ -24,7 +27,7 @@ describe('httpGetRequestObs function', () => {
                 }
             }
         )
-    });
+    }).timeout(10000);
 
 });
 
@@ -38,7 +41,10 @@ describe('httpPostRequestObs function', () => {
         let serviceCallResult;
         httpPostRequestObs(uri, user).subscribe(
             data => serviceCallResult = data,
-            error => console.error(error),
+            error => {
+                console.error(error);
+                done(error);
+            },
             () => {
                 if (serviceCallResult.name === name && serviceCallResult.job === job) {
                     return done()
@@ -48,7 +54,7 @@ describe('httpPostRequestObs function', () => {
                 }
             }
         )
-    });
+    }).timeout(20000);
 
 });
 
@@ -63,7 +69,10 @@ describe('httpPutRequestObs function', () => {
         let serviceCallResult;
         httpPutRequestObs(uri, user).subscribe(
             data => serviceCallResult = data,
-            error => console.error(error),
+            error => {
+                console.error(error);
+                done(error);
+            },
             () => {
                 if (serviceCallResult.name === name && serviceCallResult.job === job) {
                     return done()
@@ -73,7 +82,7 @@ describe('httpPutRequestObs function', () => {
                 }
             }
         )
-    });
+    }).timeout(20000);
 
 });
 
@@ -88,7 +97,10 @@ describe('httpPatchRequestObs function', () => {
         let serviceCallResult;
         httpPatchRequestObs(uri, user).subscribe(
             data => serviceCallResult = data,
-            error => console.error(error),
+            error => {
+                console.error(error);
+                done(error);
+            },
             () => {
                 if (serviceCallResult.name === name && serviceCallResult.job === job) {
                     return done()
@@ -98,7 +110,7 @@ describe('httpPatchRequestObs function', () => {
                 }
             }
         )
-    });
+    }).timeout(20000);
 
 });
 
@@ -113,7 +125,10 @@ describe('httpDeleteRequestObs function', () => {
         let serviceCallResult;
         httpDeleteRequestObs(uri, user).subscribe(
             data => serviceCallResult = data,
-            error => console.error(error),
+            error => {
+                console.error(error);
+                done(error);
+            },
             () => {
                 if (serviceCallResult.response.statusCode === 204) {
                     return done()
@@ -123,6 +138,6 @@ describe('httpDeleteRequestObs function', () => {
                 }
             }
         )
-    });
+    }).timeout(20000);
 
 });

@@ -10,7 +10,10 @@ describe('httpGetRequestObs function', () => {
     it('issues an http get request to wikipedia - returns an observable', done => {
         const uri = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=pentole&namespace=0&limit=10';
         let serviceCallResult;
-        observable_http_request_1.httpGetRequestObs(uri).subscribe(data => serviceCallResult = data, error => console.error(error), () => {
+        observable_http_request_1.httpGetRequestObs(uri).subscribe(data => serviceCallResult = data, error => {
+            console.error(error);
+            done(error);
+        }, () => {
             if (serviceCallResult.length > 0) {
                 return done();
             }
@@ -19,7 +22,7 @@ describe('httpGetRequestObs function', () => {
                 return done(new Error('serviceCallResult empty'));
             }
         });
-    });
+    }).timeout(10000);
 });
 describe('httpPostRequestObs function', () => {
     it('issues an http post request to https://reqres.in/ - returns an observable', done => {
@@ -28,7 +31,10 @@ describe('httpPostRequestObs function', () => {
         const job = 'dev';
         const user = { name, job };
         let serviceCallResult;
-        observable_http_request_2.httpPostRequestObs(uri, user).subscribe(data => serviceCallResult = data, error => console.error(error), () => {
+        observable_http_request_2.httpPostRequestObs(uri, user).subscribe(data => serviceCallResult = data, error => {
+            console.error(error);
+            done(error);
+        }, () => {
             if (serviceCallResult.name === name && serviceCallResult.job === job) {
                 return done();
             }
@@ -37,7 +43,7 @@ describe('httpPostRequestObs function', () => {
                 return done(new Error('serviceCallResult empty'));
             }
         });
-    });
+    }).timeout(20000);
 });
 describe('httpPutRequestObs function', () => {
     it('issues an http put request to https://reqres.in/ - returns an observable', done => {
@@ -46,7 +52,10 @@ describe('httpPutRequestObs function', () => {
         const job = 'dev';
         const user = { name, job };
         let serviceCallResult;
-        observable_http_request_3.httpPutRequestObs(uri, user).subscribe(data => serviceCallResult = data, error => console.error(error), () => {
+        observable_http_request_3.httpPutRequestObs(uri, user).subscribe(data => serviceCallResult = data, error => {
+            console.error(error);
+            done(error);
+        }, () => {
             if (serviceCallResult.name === name && serviceCallResult.job === job) {
                 return done();
             }
@@ -55,7 +64,7 @@ describe('httpPutRequestObs function', () => {
                 return done(new Error('serviceCallResult empty'));
             }
         });
-    });
+    }).timeout(20000);
 });
 describe('httpPatchRequestObs function', () => {
     it('issues an http patch request to https://reqres.in/ - returns an observable', done => {
@@ -64,7 +73,10 @@ describe('httpPatchRequestObs function', () => {
         const job = 'dev';
         const user = { name, job };
         let serviceCallResult;
-        observable_http_request_4.httpPatchRequestObs(uri, user).subscribe(data => serviceCallResult = data, error => console.error(error), () => {
+        observable_http_request_4.httpPatchRequestObs(uri, user).subscribe(data => serviceCallResult = data, error => {
+            console.error(error);
+            done(error);
+        }, () => {
             if (serviceCallResult.name === name && serviceCallResult.job === job) {
                 return done();
             }
@@ -73,7 +85,7 @@ describe('httpPatchRequestObs function', () => {
                 return done(new Error('serviceCallResult empty'));
             }
         });
-    });
+    }).timeout(20000);
 });
 describe('httpDeleteRequestObs function', () => {
     it('issues an http delete request to https://reqres.in/ - returns an observable', done => {
@@ -82,7 +94,10 @@ describe('httpDeleteRequestObs function', () => {
         const job = 'dev';
         const user = { name, job };
         let serviceCallResult;
-        observable_http_request_5.httpDeleteRequestObs(uri, user).subscribe(data => serviceCallResult = data, error => console.error(error), () => {
+        observable_http_request_5.httpDeleteRequestObs(uri, user).subscribe(data => serviceCallResult = data, error => {
+            console.error(error);
+            done(error);
+        }, () => {
             if (serviceCallResult.response.statusCode === 204) {
                 return done();
             }
@@ -91,6 +106,6 @@ describe('httpDeleteRequestObs function', () => {
                 return done(new Error('status code expected is 204 and not ' + serviceCallResult));
             }
         });
-    });
+    }).timeout(20000);
 });
 //# sourceMappingURL=observable-http-request.spec.js.map

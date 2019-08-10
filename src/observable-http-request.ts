@@ -17,11 +17,15 @@ const requestGetObs = bindNodeCallback(requestGetFunction, toBodyOnly);
 // ============================ http POST ================================
 // Returns an Observable which emits when the operation is completed and the response returned
 export function httpPostRequestObs(uri: string, body: any, headers?: any) {
-    return headers ? requestPostObs(uri, { json: true, body, headers}, ) : requestPostObs(uri, { json: true, body});
+    const options: request.CoreOptions = { json: true, body};
+    if (headers) {
+        options.headers = headers;
+    }
+    return requestPostObs(uri, options);
 }
 // https://stackoverflow.com/questions/43462628/cannot-create-observable-from-observable-bindnodecallbackfs-readfile-in-typesc
 const requestPostFunction = (uri: string, 
-                            options: any, 
+                            options: request.CoreOptions, 
                             callback: (err, _res: request.Response, body) => void) => request.post(uri, options, callback);
 const requestPostObs = bindNodeCallback(requestPostFunction, toBodyOnly);
 

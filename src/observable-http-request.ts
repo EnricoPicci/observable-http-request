@@ -42,9 +42,9 @@ export function httpDeleteRequestObs(uri: string, body: any, authToken?: string)
 function httpRequestObs(
     uri: string, 
     body: any, 
-    operationFunction: (uri: string, options?: request.CoreOptions, callback?: request.RequestCallback) => request.Request, 
+    operationFunction: (uri: string, options?: request.CoreOptions, callback?: request.RequestCallback) => void, 
     authToken?: string
-): Observable<any> {
+): Observable<request.Response> {
     const options: request.CoreOptions = { json: true, body };
     if (authToken) {
       options.auth = {

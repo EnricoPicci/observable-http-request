@@ -1,6 +1,6 @@
 {
   "name": "observable-http-request",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "Functions that provide node node http request APIs as Observables",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

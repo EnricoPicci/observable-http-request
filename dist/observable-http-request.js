@@ -4,57 +4,50 @@ const rxjs_1 = require("rxjs");
 const request = require("request");
 // ============================ http GET ================================
 // Returns an Observable which emits when the data is ready
-function httpGetRequestObs(uri) {
-    return requestGetObs(uri, { json: true });
+function httpGetRequestObs(uri, authToken) {
+    return httpRequestObs(uri, {}, request.post, authToken);
 }
 exports.httpGetRequestObs = httpGetRequestObs;
-// https://stackoverflow.com/questions/43462628/cannot-create-observable-from-observable-bindnodecallbackfs-readfile-in-typesc
-const requestGetFunction = (uri, options, callback) => request.get(uri, options, callback);
-const requestGetObs = rxjs_1.bindNodeCallback(requestGetFunction, toBodyOnly);
 // ============================ http POST ================================
-// Returns an Observable which emits when the operation is completed and the response returned
-function httpPostRequestObs(uri, body, headers) {
-    const options = { json: true, body };
-    if (headers) {
-        options.headers = headers;
-    }
-    return requestPostObs(uri, options);
+// Returns an Observable which emits the response received asnd then completes
+function httpPostRequestObs(uri, body, authToken) {
+    return httpRequestObs(uri, body, request.post, authToken);
 }
 exports.httpPostRequestObs = httpPostRequestObs;
-// https://stackoverflow.com/questions/43462628/cannot-create-observable-from-observable-bindnodecallbackfs-readfile-in-typesc
-const requestPostFunction = (uri, options, callback) => request.post(uri, options, callback);
-const requestPostObs = rxjs_1.bindNodeCallback(requestPostFunction, toBodyOnly);
 // ============================ http PUT ================================
 // Returns an Observable which emits when the operation is completed and the response returned
-function httpPutRequestObs(uri, body) {
-    return requestPutObs(uri, { json: true, body });
+function httpPutRequestObs(uri, body, authToken) {
+    return httpRequestObs(uri, body, request.put, authToken);
 }
 exports.httpPutRequestObs = httpPutRequestObs;
-// https://stackoverflow.com/questions/43462628/cannot-create-observable-from-observable-bindnodecallbackfs-readfile-in-typesc
-const requestPutFunction = (uri, options, callback) => request.put(uri, options, callback);
-const requestPutObs = rxjs_1.bindNodeCallback(requestPutFunction, toBodyOnly);
 // ============================ http PATCH ================================
 // Returns an Observable which emits when the operation is completed and the response returned
-function httpPatchRequestObs(uri, body) {
-    return requestPatchObs(uri, { json: true, body });
+function httpPatchRequestObs(uri, body, authToken) {
+    return httpRequestObs(uri, body, request.patch, authToken);
 }
 exports.httpPatchRequestObs = httpPatchRequestObs;
-// https://stackoverflow.com/questions/43462628/cannot-create-observable-from-observable-bindnodecallbackfs-readfile-in-typesc
-const requestPatchFunction = (uri, options, callback) => request.patch(uri, options, callback);
-const requestPatchObs = rxjs_1.bindNodeCallback(requestPatchFunction, toBodyOnly);
 // ============================ http DELETE ================================
 // Returns an Observable which emits when the operation is completed and the response returned
-function httpDeleteRequestObs(uri, body) {
-    return requestDeleteObs(uri, { json: true, body });
+function httpDeleteRequestObs(uri, body, authToken) {
+    return httpRequestObs(uri, body, request.delete, authToken);
 }
 exports.httpDeleteRequestObs = httpDeleteRequestObs;
-// https://stackoverflow.com/questions/43462628/cannot-create-observable-from-observable-bindnodecallbackfs-readfile-in-typesc
-const requestDeleteFunction = (uri, options, callback) => request.delete(uri, options, callback);
-const requestDeleteObs = rxjs_1.bindNodeCallback(requestDeleteFunction, toResponseAndBody);
-function toBodyOnly(_res, body) {
-    return body;
-}
-function toResponseAndBody(response, body) {
-    return { response, body };
+function httpRequestObs(uri, body, operationFunction, authToken) {
+    const options = { json: true, body };
+    if (authToken) {
+        options.auth = {
+            bearer: authToken
+        };
+    }
+    return rxjs_1.Observable.create((observer) => {
+        operationFunction(uri, options, (err, resp) => {
+            if (err) {
+                observer.error(err);
+                return;
+            }
+            observer.next(resp);
+            observer.complete();
+        });
+    });
 }
 //# sourceMappingURL=observable-http-request.js.map

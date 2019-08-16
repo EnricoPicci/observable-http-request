@@ -1,18 +1,20 @@
 
 import 'mocha';
 
+import {map} from 'rxjs/operators';
 import {httpGetRequestObs} from './observable-http-request';
 import {httpPostRequestObs} from './observable-http-request';
 import {httpPutRequestObs} from './observable-http-request';
 import {httpPatchRequestObs} from './observable-http-request';
 import {httpDeleteRequestObs} from './observable-http-request';
+import request = require('request');
 
 describe('httpGetRequestObs function', () => {
     
     it('issues an http get request to wikipedia - returns an observable', done => {
         const uri = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=pentole&namespace=0&limit=10';
         let serviceCallResult;
-        httpGetRequestObs(uri).subscribe(
+        httpGetRequestObs(uri).pipe(map((res: request.Response) => res.body)).subscribe(
             data => serviceCallResult = data,
             error => {
                 console.error(error);
@@ -39,7 +41,7 @@ describe('httpPostRequestObs function', () => {
         const job = 'dev';
         const user = {name, job};
         let serviceCallResult;
-        httpPostRequestObs(uri, user).subscribe(
+        httpPostRequestObs(uri, user).pipe(map((res: request.Response) => res.body)).subscribe(
             data => serviceCallResult = data,
             error => {
                 console.error(error);
@@ -67,7 +69,7 @@ describe('httpPutRequestObs function', () => {
         const job = 'dev';
         const user = {name, job};
         let serviceCallResult;
-        httpPutRequestObs(uri, user).subscribe(
+        httpPutRequestObs(uri, user).pipe(map((res: request.Response) => res.body)).subscribe(
             data => serviceCallResult = data,
             error => {
                 console.error(error);
@@ -95,7 +97,7 @@ describe('httpPatchRequestObs function', () => {
         const job = 'dev';
         const user = {name, job};
         let serviceCallResult;
-        httpPatchRequestObs(uri, user).subscribe(
+        httpPatchRequestObs(uri, user).pipe(map((res: request.Response) => res.body)).subscribe(
             data => serviceCallResult = data,
             error => {
                 console.error(error);
@@ -122,19 +124,19 @@ describe('httpDeleteRequestObs function', () => {
         const name = 'John';
         const job = 'dev';
         const user = {name, job};
-        let serviceCallResult;
+        let response;
         httpDeleteRequestObs(uri, user).subscribe(
-            data => serviceCallResult = data,
+            data => response = data,
             error => {
                 console.error(error);
                 done(error);
             },
             () => {
-                if (serviceCallResult.response.statusCode === 204) {
+                if (response.statusCode === 204) {
                     return done()
                 } else {
-                    console.error(serviceCallResult);
-                    return done(new Error('status code expected is 204 and not ' + serviceCallResult));
+                    console.error(response);
+                    return done(new Error('status code expected is 204 and not ' + response));
                 }
             }
         )

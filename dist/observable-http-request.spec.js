@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("mocha");
+const operators_1 = require("rxjs/operators");
 const observable_http_request_1 = require("./observable-http-request");
 const observable_http_request_2 = require("./observable-http-request");
 const observable_http_request_3 = require("./observable-http-request");
@@ -10,7 +11,7 @@ describe('httpGetRequestObs function', () => {
     it('issues an http get request to wikipedia - returns an observable', done => {
         const uri = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=pentole&namespace=0&limit=10';
         let serviceCallResult;
-        observable_http_request_1.httpGetRequestObs(uri).subscribe(data => serviceCallResult = data, error => {
+        observable_http_request_1.httpGetRequestObs(uri).pipe(operators_1.map((res) => res.body)).subscribe(data => serviceCallResult = data, error => {
             console.error(error);
             done(error);
         }, () => {
@@ -31,7 +32,7 @@ describe('httpPostRequestObs function', () => {
         const job = 'dev';
         const user = { name, job };
         let serviceCallResult;
-        observable_http_request_2.httpPostRequestObs(uri, user).subscribe(data => serviceCallResult = data, error => {
+        observable_http_request_2.httpPostRequestObs(uri, user).pipe(operators_1.map((res) => res.body)).subscribe(data => serviceCallResult = data, error => {
             console.error(error);
             done(error);
         }, () => {
@@ -52,7 +53,7 @@ describe('httpPutRequestObs function', () => {
         const job = 'dev';
         const user = { name, job };
         let serviceCallResult;
-        observable_http_request_3.httpPutRequestObs(uri, user).subscribe(data => serviceCallResult = data, error => {
+        observable_http_request_3.httpPutRequestObs(uri, user).pipe(operators_1.map((res) => res.body)).subscribe(data => serviceCallResult = data, error => {
             console.error(error);
             done(error);
         }, () => {
@@ -73,7 +74,7 @@ describe('httpPatchRequestObs function', () => {
         const job = 'dev';
         const user = { name, job };
         let serviceCallResult;
-        observable_http_request_4.httpPatchRequestObs(uri, user).subscribe(data => serviceCallResult = data, error => {
+        observable_http_request_4.httpPatchRequestObs(uri, user).pipe(operators_1.map((res) => res.body)).subscribe(data => serviceCallResult = data, error => {
             console.error(error);
             done(error);
         }, () => {
@@ -93,17 +94,17 @@ describe('httpDeleteRequestObs function', () => {
         const name = 'John';
         const job = 'dev';
         const user = { name, job };
-        let serviceCallResult;
-        observable_http_request_5.httpDeleteRequestObs(uri, user).subscribe(data => serviceCallResult = data, error => {
+        let response;
+        observable_http_request_5.httpDeleteRequestObs(uri, user).subscribe(data => response = data, error => {
             console.error(error);
             done(error);
         }, () => {
-            if (serviceCallResult.response.statusCode === 204) {
+            if (response.statusCode === 204) {
                 return done();
             }
             else {
-                console.error(serviceCallResult);
-                return done(new Error('status code expected is 204 and not ' + serviceCallResult));
+                console.error(response);
+                return done(new Error('status code expected is 204 and not ' + response));
             }
         });
     }).timeout(20000);

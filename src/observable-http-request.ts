@@ -11,7 +11,7 @@ export function httpGetRequestObs(uri: string, authToken?: string) {
 
 // ============================ http POST ================================
 // Returns an Observable which emits the response received asnd then completes
-export function httpPostRequestObs(uri: string, body: any, authToken?: string): Observable<any> {
+export function httpPostRequestObs(uri: string, body: any, authToken?: string) {
     return httpRequestObs(uri, body, request.post, authToken);
 }
 
